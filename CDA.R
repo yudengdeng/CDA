@@ -214,3 +214,13 @@ x <- c(rep(scores, malformed), rep(scores, n - malformed))
 y <- c(rep(1, sum(malformed)), rep(0, sum(n - malformed)))
 (z2 <- 32574 * cor(x, y)^2) 
 1 - pchisq(z2, df = 1) 
+
+
+#chap5c
+dta <- read.table("Horseshoe crab data.txt", header = TRUE, sep = "")
+dta$revcolor <-  factor(dta$color, levels = c("5", "2", "3", "4")) 
+dta$revspine <-  factor(dta$spine, levels = c("3", "1", "2")) 
+dta$weight <- dta$weight/1000
+crab.fit.logist <- glm(y ~ revcolor+ revspine+width+weight, family = binomial, data = dta)
+summary(crab.fit.logist)
+

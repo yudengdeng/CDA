@@ -105,9 +105,9 @@ observed <- matrix(c(observed[[1]][,ncol(observed[[1]])],
 
 fit.logit <- glm(matrix.succ.fail~w.unique, family=binomial)
 
-fitted.yes <- aggregate(predict(fit.1ogit, type="response") *
+fitted.yes <- aggregate(predict(fit.logit, type="response") *
                           apply(matrix.succ.fail,1,sum), by=list(W=w.cut), sum)
-fitted.no <- aggregate((1-predict(fit.1ogit, type="response")) *
+fitted.no <- aggregate((1-predict(fit.logit, type="response")) *
                          apply(matrix.succ.fail,1,sum), by=list(W=w.cut), sum) 
 fitted.all <- matrix(c(fitted.yes$x,fitted.no$x), ncol = 2) 
 
@@ -126,8 +126,6 @@ fit.grouped <- glm(observed ~ seq(22.75, 29.75), family = binomial)
 hltest(fit.grouped)
 
 
-
-
 #chap5c
 Alcohol<-factor(c("0","<1","1-2","3-5",">=6"), levels=c("0","<1","1-2","3-5",">=6"))
 malformed<-c(48,38,5,1,1)
@@ -139,7 +137,7 @@ options(contrasts=c("contr.treatment", "contr.poly"))
 
 #More "Manually" way
 # Install the required package
-install.packages("fastDummies")
+#install.packages("fastDummies")
 # Load the library
 library(fastDummies)
 dta <- cbind(data.frame(Alcohol),malformed,n)
@@ -172,3 +170,47 @@ lines(result.predict$fit+1.96*result.predict$se.fit,lty=3)
 
 
 anova(Table.5.3.logit3,result,test="Chisq")
+
+#with likelihood-ratio and Pearson chi-squared statistics
+# LR statistic
+summary(Table.5.3.logit3)$deviance
+
+# Pearson chi-squared statistic
+sum(residuals(Table.5.3.logit3, type="pearson")^2)
+
+#The latter rejects the hypothesis of model fit.
+1-pchisq(12.08205, df=4)
+
+
+#contrast of 2-1, 3-1, 4-1, 5-1
+exp(Table.5.3.logit$coefficients[2:5])
+#contrast of 3-2, 4-1, 5-2
+exp(Table.5.3.logit$coefficients[3:5]-Table.5.3.logit$coefficients[2])
+#contrast of 4-3, 5-3
+exp(Table.5.3.logit$coefficients[4:5]-Table.5.3.logit$coefficients[3])
+#contrast of 5-4
+exp(Table.5.3.logit$coefficients[5]-Table.5.3.logit$coefficients[4])
+
+newdta <- c(data.frame(Alcohol = "0"),data.frame(Alcohol = "3-5"))
+newdta <- data.frame(Alcohol = c("0","1-2"))
+resp <- predict(Table.5.3.logit,newdta,type="response")
+exp(resp[2]-resp[1])
+
+
+#Linear Logit Model 
+scores<-c(0,.5,1.5,4,7)
+Table.5.3.LL<-glm(malformed/n~scores,family=binomial,weights=n)
+summary(Table.5.3.LL)
+# pearson chi-squared statistic
+sum(residuals(Table.5.3.LL, type="pearson")^2)
+1-pchisq(2.05229, df=3)
+# LR statistic
+Table.5.3.LL$null.deviance - Table.5.3.LL$deviance 
+1-pchisq(4.253277, df=3)
+
+
+#CAT test
+x <- c(rep(scores, malformed), rep(scores, n - malformed))
+y <- c(rep(1, sum(malformed)), rep(0, sum(n - malformed)))
+(z2 <- 32574 * cor(x, y)^2) 
+1 - pchisq(z2, df = 1) 

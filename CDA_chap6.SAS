@@ -1,4 +1,3 @@
-** Conduct Backward elimination
 * INPUT THE DATA
 data crab;
 input color spine width satellite weight; 

@@ -224,3 +224,78 @@ dta$weight <- dta$weight/1000
 crab.fit.logist <- glm(y ~ revcolor+ revspine+width+weight, family = binomial, data = dta)
 summary(crab.fit.logist)
 
+#Hosmer and Lemeshow Test
+#install.packages("glmtoolbox")
+library(glmtoolbox)
+hltest(crab.fit.logist) #no lack of fit
+
+install.packages("car")
+library(car)
+Anova(crab.fit.logist,type=3)
+
+#more manually way to calculate LR chisquare
+(crab.fit.logist_nocolor <- glm(y ~ revspine+width+weight, family = binomial, data = dta))
+anova(crab.fit.logist_nocolor,crab.fit.logist,test="Chisq")
+
+(crab.fit.logist_nospine <- glm(y ~ revcolor+width+weight, family = binomial, data = dta))
+anova(crab.fit.logist_nospine,crab.fit.logist,test="Chisq")
+
+(crab.fit.logist_nowidth <- glm(y ~ revspine+revcolor+weight, family = binomial, data = dta))
+anova(crab.fit.logist_nowidth,crab.fit.logist,test="Chisq")
+
+
+
+#testing without spine
+Anova(crab.fit.logist_nospine,type=3)
+
+#testing without spine or weight
+crab.fit.logist_nospine_noweight <- glm(y ~ revcolor+width, family = binomial, data = dta)
+Anova(crab.fit.logist_nospine_noweight,type=3)
+
+summary(crab.fit.logist_nospine_noweight)
+
+
+#Let’s see what happens when we try to combine levels of C.
+#combine level 2 and 3
+dta$revcolor_recode[dta$revcolor_recode == "2" | dta$revcolor_recode == "3"] = "2"
+crab.fit.logist_nospine_noweight_colorrecode <- glm(y ~ revcolor_recode+width, family = binomial, data = dta)
+anova(crab.fit.logist_nospine_noweight_colorrecode, crab.fit.logist_nospine_noweight, test = "Chi")
+#combine all possible levels
+disp.contrast <- vector()
+for(i in 2:4){
+  for(j in (i+1):5){
+dta$revcolor_recode <- dta$revcolor
+dta$revcolor_recode[dta$revcolor_recode == i | dta$revcolor_recode == j] = i
+crab.fit.logist_nospine_noweight_colorrecode <- glm(y ~ revcolor_recode+width, 
+                                                    family = binomial, data = dta)
+result.tmp <- anova(crab.fit.logist_nospine_noweight_colorrecode, 
+                    crab.fit.logist_nospine_noweight, test = "Chi")
+disp.contrast <- rbind(disp.contrast,c(paste(i,"combined with",j),
+                                       result.tmp$`Df`[2],result.tmp$`Deviance`[2],result.tmp$`Pr(>Chi)`[2]))
+}
+}
+disp.contrast <- data.frame(disp.contrast)
+names(disp.contrast) <- c("combination","DF","LR Chi-square","P-value")
+print(disp.contrast,row.names = FALSE)
+
+
+#We include dark=1; if color=4 then dark=2;
+dta$darkness <- 1
+dta$darkness[dta$revcolor == 5] <- 2
+crab.fit.logist_nospine_noweight_darkness <- 
+  glm(y ~ darkness+width, family = binomial, data = dta)
+summary(crab.fit.logist_nospine_noweight_darkness)
+
+#odds ratio
+exp(coefficients(crab.fit.logist_nospine_noweight_darkness))
+
+library(glmtoolbox)
+hltest(crab.fit.logist_nospine_noweight_darkness) #no lack of fit
+
+
+#Interaction model
+crab.fit.logist_nospine_noweight_darkness <- 
+  glm(y ~ darkness+width+darkness*width, family = binomial, data = dta)
+summary(crab.fit.logist_nospine_noweight_darkness)
+Anova(crab.fit.logist_nospine_noweight_darkness,type=3)
+#We do not reject that the interaction is not needed.

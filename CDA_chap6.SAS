@@ -1,4 +1,3 @@
-* INPUT THE DATA
 data crab;
 input color spine width satellite weight; 
 cards;
@@ -176,7 +175,6 @@ cards;
 5  3  27.0  0  2625
 3  2  24.5  0  2000
 ;
-* LOAD THE DATA
 data crabs; set crab;
 weight=weight/1000; 
 width_sq=width*width;
@@ -194,9 +192,15 @@ if width>27.25 then w=27.75;
 if width>28.25 then w=28.75;
 if width>29.25 then  w=29.75;
 run;
-* Backward selection with slstay=0.05;
+*Backward selection with slstay=0.05;
 proc logistic data=crabs descending;
 class color spine/param=ref;
 model y=color spine width weight color*spine color*width color*weight
         spine*width spine*weight width*weight/selection=backward;
+run;
+*Backward selection with slstay=0.15;
+proc logistic data=crabs descending;
+class color spine/param=ref;
+model y = color spine width weight color*spine color*width color*weight
+  spine*width spine*weight width*weight / selection=backward slstay=0.15;
 run;

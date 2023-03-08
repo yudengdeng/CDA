@@ -257,6 +257,7 @@ summary(crab.fit.logist_nospine_noweight)
 
 #Let’s see what happens when we try to combine levels of C.
 #combine level 2 and 3
+dta$revcolor_recode <- dta$revcolor
 dta$revcolor_recode[dta$revcolor_recode == "2" | dta$revcolor_recode == "3"] = "2"
 crab.fit.logist_nospine_noweight_colorrecode <- glm(y ~ revcolor_recode+width, family = binomial, data = dta)
 anova(crab.fit.logist_nospine_noweight_colorrecode, crab.fit.logist_nospine_noweight, test = "Chi")

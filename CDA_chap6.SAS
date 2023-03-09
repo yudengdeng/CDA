@@ -204,3 +204,26 @@ class color spine/param=ref;
 model y = color spine width weight color*spine color*width color*weight
   spine*width spine*weight width*weight / selection=backward slstay=0.15;
 run;
+*Submodel for testing width and width*weight simultaneously;
+proc logistic data=crabs descending;
+class color spine/param=ref;
+model y=color weight color*weight;
+run;
+*Forward selection with slstay=0.05;
+proc logistic data=crabs descending;
+class color spine/param=ref;
+model y=color spine width weight color*spine color*width color*weight
+        spine*width spine*weight width*weight/selection=forward slstay=0.15;
+run;
+*Forward selection with slstay=0.15;
+proc logistic data=crabs descending;
+class color spine/param=ref;
+model y=color spine width weight color*spine color*width color*weight
+        spine*width spine*weight width*weight/selection=forward slstay=0.15;
+run;
+*Stepwise selection with slstay=0.15, slentry=0.15;
+proc logistic data=crabs descending;
+class color spine/param=ref;
+model y=color spine width weight color*spine color*width color*weight
+        spine*width spine*weight width*weight/selection=stepwise slstay=0.1 slentry=0.1;
+run;

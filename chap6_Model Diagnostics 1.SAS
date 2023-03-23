@@ -199,3 +199,12 @@ data diag4; set diag3; r=p/sqrt(1-h);
 phat = sumy/sumn;
 proc gplot;
  plot phat*w; plot r*w; plot r*dark; plot r*eta;
+/* Save the printed result as PDF file */
+ods tagsets.latex close;
+ods pdf file='/home/u59261703/exportedFiles/output.pdf';
+proc print data=crabs_agg; 
+run;
+ods pdf close;
+proc logistic data=crabs_agg descending;
+ class dark /param=ref;
+model sumy/sumn = dark w / influence iplots;

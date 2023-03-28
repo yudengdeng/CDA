@@ -1,3 +1,4 @@
+*Data from Table 5.14: Space Shuttle disaster;
 data shut1; input temp td @@; datalines;
  66 0 70 1 69 0 68 0 67 0 72 0 73 0 70 0 57 1 63 1
  70 1 78 0 67 0 53 1 67 0 75 0 70 0 81 0 76 0 79 0
@@ -19,6 +20,6 @@ goptions;
  symbol2 color=black value=none l=1 interpol=join;
  symbol3 color=black value=none l=2 interpol=join;
  symbol4 color=black value=none l=3 interpol=join;
- legend1 label=none value=(’data’ ’logit’ ’cloglog’ ’probit’);
+ legend1 label=none value=('data' 'logit' 'cloglog' 'probit');
 proc gplot data=shut7;
  plot td*temp p1*temp p2*temp p3*temp / overlay legend=legend1;

@@ -19,3 +19,4 @@ run;
 proc catmod data = ideology;
  weight count; response alogits;
  model ideology = _response_ party;
+run;

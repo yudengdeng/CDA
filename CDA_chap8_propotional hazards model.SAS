@@ -22,3 +22,85 @@ run;
 proc logistic data=leuk1; 
  model y=x1 x2;
 run;
+*******************************************************************
+M1: continuation ratio logit model with main effects, 
+	common beta
+*******************************************************************;
+proc nlmixed; * effect of beta constant across stages;
+ parms a1=0 a2=0 b1=0 b2=0; 
+ p1=exp(a1+x1*b1+x2*b2); p2=exp(a2+x1*b1+x2*b2);
+ if (y=1) then z=(p1/(1+p1));
+ if (y=2) then z=(1/(1+p1))*(p2/(1+p2));
+ if (y=3) then z=(1/(1+p1))*(1/(1+p2));
+ if (z>1e-8) then ll=log(z); else ll=-1e100;
+ model y ~ general(ll);
+run;
+
+*with refined starting points;
+proc nlmixed; * effect of beta constant across stages;
+ parms a1=-7 a2=-6 b1=-3 b2=1; * started with a1=0 a2=1 b1=0 b2=0;
+ p1=exp(a1+x1*b1+x2*b2); p2=exp(a2+x1*b1+x2*b2);
+ if (y=1) then z=(p1/(1+p1));
+ if (y=2) then z=(1/(1+p1))*(p2/(1+p2));
+ if (y=3) then z=(1/(1+p1))*(1/(1+p2));
+ if (z>1e-8) then ll=log(z); else ll=-1e100;
+ model y ~ general(ll);
+run;
+
+*******************************************************************
+M2: continuation ratio logit model with main effects, 
+	separate beta
+*******************************************************************;
+proc nlmixed; * effect of beta changes across stages;
+ parms a1=-7 a2=-6 b11=0 b12=0 b21=0 b22=0; 
+ p1=exp(a1+x1*b11+x2*b12); p2=exp(a2+x1*b21+x2*b22);
+ if (y=1) then z=(p1/(1+p1));
+ if (y=2) then z=(1/(1+p1))*(p2/(1+p2));
+ if (y=3) then z=(1/(1+p1))*(1/(1+p2));
+ if (z>1e-8) then ll=log(z); else ll=-1e100;
+ model y ~ general(ll);
+run;
+
+
+*******************************************************************
+M3: continuation ratio logit model with main effects + interaction,
+	common beta
+*******************************************************************;
+proc nlmixed; * interaction, constant beta;
+ parms a1=-7 a2=-6 b1=-3 b2=1 b12=0; 
+ p1=exp(a1+x1*b1+x2*b2+b12*x1*x2); p2=exp(a2+x1*b1+x2*b2+b12*x1*x2);
+ if (y=1) then z=(p1/(1+p1));
+ if (y=2) then z=(1/(1+p1))*(p2/(1+p2));
+ if (y=3) then z=(1/(1+p1))*(1/(1+p2));
+ if (z>1e-8) then ll=log(z); else ll=-1e100;
+ model y ~ general(ll);
+run;
+
+
+*******************************************************************
+M4: cumulative logit model with main effect.
+*******************************************************************;
+proc logistic;
+ model y = x1 x2;
+run;
+
+*******************************************************************
+M5: cumulative logit model with main effect + interaction.
+*******************************************************************;
+proc logistic;
+ model y = x1 x2 x1*x2;
+run;
+
+*******************************************************************
+M6: continuation ratio c-log-log model with main effects,
+	common beta
+*******************************************************************;
+proc nlmixed; * effect of beta constant across stages;
+ parms a1=-7 a2=-6 b1=-3 b2=1; * started with a1=0 a2=1 b1=0 b2=0;
+ p1=1-exp(-exp(a1+x1*b1+x2*b2)); p2=1-exp(-exp(a2+x1*b1+x2*b2));
+ if (y=1) then z=p1;
+ if (y=2) then z=p2*(1-p1);
+ if (y=3) then z=(1-p1)*(1-p2);
+ if (z>1e-8) then ll=log(z); else ll=-1e100;
+ model y ~ general(ll);
+run;

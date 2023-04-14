@@ -1,7 +1,6 @@
 *mental: 1 = well, 2 = mild symptom formation, 3 = moderate symptom formation, 4 = impaired
 *ses: socioeconomic status (low=0 or high=1).
-*life: number and severity of important life events
-
+*life: number and severity of important life events;
 data impair;
 input mental ses life; 
 datalines;

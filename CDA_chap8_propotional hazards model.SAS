@@ -9,19 +9,6 @@ data leuk1;
 0   11.27 1 0   11.51 1 0   11.51 1
 ;
 run;
-proc nlmixed; * effect of beta constant across stages;
- parms a1=-7 a2=-6 b1=-3 b2=1; * started with a1=0 a2=1 b1=0 b2=0;
- p1=exp(a1+x1*b1+x2*b2); p2=exp(a2+x1*b1+x2*b2);
- if (y=1) then z=(p1/(1+p1));
- if (y=2) then z=(1/(1+p1))*(p2/(1+p2));
- if (y=3) then z=(1/(1+p1))*(1/(1+p2));
- if (z>1e-8) then ll=log(z); else ll=-1e100;
- model y ~ general(ll);
-run;
-*Proportional odds;
-proc logistic data=leuk1; 
- model y=x1 x2;
-run;
 *******************************************************************
 M1: continuation ratio logit model with main effects, 
 	common beta

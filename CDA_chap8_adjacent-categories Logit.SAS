@@ -1,6 +1,6 @@
 data ideology;
 *Democratic party = 1, Republican party = 0
-Very Liberal, Slightly Liberal, Moderate, Slightly Conservative, Very Conservative
+*Very Liberal ideology = 1, Slightly Liberal ideology = 2, Moderate ideology = 3, Slightly Conservative ideology = 4, Very Conservative ideology = 5
 ;
 input party ideology count @@;
 cards;

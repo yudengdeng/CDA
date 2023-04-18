@@ -1,4 +1,5 @@
 data ideology;
+*Democratic party = 1, Republican party = 0*;
 input party ideology count @@;
 cards;
 1 1 80   

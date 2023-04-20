@@ -28,7 +28,6 @@ data table;
  1 1 18  1 2 171 2 1 5 2 2 99
 ;
 run;
-format Treatment $tc. Outcome $oc.;
 proc freq data=table order=data; weight count;
   tables Treatment*Outcome / norow nocol nopercent expected;
   exact chisq or;

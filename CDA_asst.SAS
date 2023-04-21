@@ -124,3 +124,10 @@ model admit/total=dept gender / aggregate scale=none;
 *Model with intercation;
 proc logistic data=berkeley; class dept gender / param=ref;
 model admit/total=dept gender dept*gender / aggregate scale=none;
+*LRT;
+proc iml;
+x = 877.056 - 856.85;    /* value to evaluate CDF at */
+df = 11 - 6;    /* degrees of freedom */
+prob = 1 - cdf("chisquare", x, df);    /* calculate CDF */
+print prob;
+quit;

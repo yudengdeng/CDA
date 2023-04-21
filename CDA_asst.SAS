@@ -100,3 +100,9 @@ datalines;
 2 2 2 2 2  17
 ;
 run;
+*Backward selection with slstay=0.05;
+proc logistic data=Table_10_1 descending;
+	class a c m r g/param=ref;
+	WEIGHT count;
+	model m = a c r g a*c a*r a*g c*r c*g r*g/selection=backward;
+run;

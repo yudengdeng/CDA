@@ -106,3 +106,20 @@ proc logistic data=Table_10_1 descending;
 	WEIGHT count;
 	model m = a c r g a*c a*r a*g c*r c*g r*g/selection=backward;
 run;
+*asst 3 problem 6;
+data berkeley;
+input dept$ gender$ admit not_admit @@;
+total=admit+not_admit;
+datalines;
+a male 512 313 a female 89 19
+b male 353 207 b female 17 8
+c male 120 205 c female 202 391
+d male 138 279 d female 131 244
+e male 53 138 e female 94 299
+f male 22 351 f female 24 317
+;
+proc logistic data=berkeley; class dept gender / param=ref;
+model admit/total=dept gender / aggregate scale=none;
+
+proc logistic data=berkeley; class dept gender / param=ref;
+model admit/total=dept gender dept*gender / aggregate scale=none;

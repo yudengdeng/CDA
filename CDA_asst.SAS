@@ -32,6 +32,7 @@ proc logistic data=shuttle_data;
 	model TD = Temp;
 	output out=preds predicted=PredProb;
 run;
+*figure of fitted lines;
 proc sgplot data=preds;
    scatter x=Temp y=TD / markerattrs=(symbol=circlefilled);
    loess x=Temp y=PredProb / lineattrs=(color=blue);

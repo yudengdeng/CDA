@@ -27,3 +27,7 @@ data shuttle_data;
    20 79 0
    ;
 run;
+proc logistic data=shuttle_data;
+   model TD=Temp;
+   plot Temp*TD;
+run;

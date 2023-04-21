@@ -118,8 +118,9 @@ d male 138 279 d female 131 244
 e male 53 138 e female 94 299
 f male 22 351 f female 24 317
 ;
+*Additive model;
 proc logistic data=berkeley; class dept gender / param=ref;
 model admit/total=dept gender / aggregate scale=none;
-
+*Model with intercation;
 proc logistic data=berkeley; class dept gender / param=ref;
 model admit/total=dept gender dept*gender / aggregate scale=none;

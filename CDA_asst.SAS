@@ -56,7 +56,7 @@ output out=diag2 stdreschi=r c=c;
 run;
 proc sgscatter data=diag2;
 title "Cook's distance and Std. Pearson resids";
-plot c*id r*id ;
+plot c*Ft r*Ft;
 run;
 *Print unusual cases;
 proc print data=diag2(where=(c>0.2 or r>3 or r<-3));

@@ -27,10 +27,19 @@ data shuttle_data;
    20 79 0
    ;
 run;
-proc logistic data=shuttle_data;
+proc logistic data=shuttle_data outest=shuttle_data_coefficients;
 	class TD(ref='0');
 	model TD = Temp;
 	output out=preds predicted=PredProb;
+run;
+proc print data = shuttle_data_coefficients;
+run;
+/* Load the saved coefficient estimates */
+data prediction;
+	set shuttle_data_coefficients;
+	logit = Intercept + Temp*31;
+	prob = exp(logit) / (1 + exp(logit));
+	put prob; *read the output from Log;
 run;
 *figure of fitted lines;
 proc sgplot data=preds;

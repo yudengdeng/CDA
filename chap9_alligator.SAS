@@ -99,3 +99,6 @@ cards;
 4 2 2 5 1    
 ;
 run;
+proc genmod order=data; class g l b i;
+ model count = g|l|b l|b|i g|i / dist=poi link=log type3;
+run;

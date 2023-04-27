@@ -55,20 +55,18 @@ datalines;
 2 2 2 2   513
 ;
 run;
-
+*Fitting the model with all four 3-way interactions;
 proc genmod order=data; class g l b i;
  model count = g|l|b g|l|i l|b|i g|b|i / dist=poi link=log type3;
 run;
-
+*Rplacing $[G B I]$ with $[G B][G I][B I]$;
 proc genmod order=data; class g l b i;
  model count = g|l|b g|l|i l|b|i  / dist=poi link=log type3;
 run;
-
-
+*So we replace [GLI] with [GL][GI][LI];
 proc genmod order=data; class g l b i;
  model count = g|l|b l|b|i g|i / dist=poi link=log type3;
 run;
-
 ******************************************************
 Collapsing over B and L affects the relationship
 between G and I??

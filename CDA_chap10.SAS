@@ -24,14 +24,14 @@ run;
 proc genmod;
  class g r a c m;
  model count=g|r|a g|r|c g|r|m g|a|c g|a|m g|c|m r|a|c r|a|m r|c|m a|c|m / link=log dist=poi type3;
- run;
+run;
 
 proc genmod;
  class g r a c m;
  model count=g|r g|a g|c g|m r|a r|c r|m a|c a|m c|m / link=log dist=poi type3;
- run;
+run;
 
 proc genmod;
  class g r a c m;
  model count=g|a g|m r|a r|m a|c a|m c|m / link=log dist=poi type3;
- run;
+run;

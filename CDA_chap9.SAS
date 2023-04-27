@@ -85,9 +85,13 @@ datalines;
 2 1 1 819 2 1 2 67
 2 2 1 186 2 2 2 22
 ;
+run;
 proc genmod order=data; class pers chol bp;
  model count = pers|chol|bp / dist=poi link=log type3;
 run;
 proc genmod order=data; class pers chol bp;
  model count = pers|chol pers|bp chol|bp / dist=poi link=log type3;
+run;
+proc genmod order=data; class pers chol bp;
+ model count = pers|chol pers|bp / dist=poi link=log r;
 run;

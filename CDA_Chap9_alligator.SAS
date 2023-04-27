@@ -99,6 +99,6 @@ cards;
 4 2 2 5 1    
 ;
 run;
-proc genmod order=data; class Lake Gender  Food;
- model Count = Lake|Gender|Size / dist=poi link=log type3;
+proc genmod order=data; class Lake Gender Food;
+ model Count = Lake|Gender|Size Lake|Food Size|Food / dist=poi link=log type3;
 run;

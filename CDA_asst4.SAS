@@ -1,4 +1,4 @@
-*exercise 9.2
+*exercise 9.2;
 data MBTI_data;
   input EI $ SN $ TF $ JP $ smoke drink n;
   datalines;

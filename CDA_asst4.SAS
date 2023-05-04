@@ -20,3 +20,17 @@ data MBTI_data;
   i n f p 22  6 79
   ;
 run;
+*Mutual independence;
+proc genmod order=data;
+class EI SN TF JP;
+model n = EI SN TF JP / dist=poi link=log type3;
+run;
+*Homogeneous association;
+proc genmod order=data;
+class EI SN TF JP;
+model n = EI|SN EI|TF EI|JP SN|TF SN|JP TF|JP / dist=poi link=log type3;
+run;
+*All three way factor;
+proc genmod order=data;
+class EI SN TF JP;
+model

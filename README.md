@@ -1,5 +1,5 @@
 # MATH/STAT 5354 Winter 2023 CDA
-<font size="1"> 
+<font size="3"> 
 This repository contains R/SAS codes from the MATH/STAT 5354 Winter 2023 course at the University of Texas at Arlington. The codes included in this repository cover the following topics related to CDA (Classical Data Analysis).</font> 
 
 ## Getting Started

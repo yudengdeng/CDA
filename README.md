@@ -8,7 +8,7 @@ To use these codes, you should have R and/or SAS installed on your computer. You
 To run a code, simply open the file in R or SAS and execute it. Make sure you have the necessary datasets and packages installed beforehand.
 
 ## Repository Structure
-The codes are organized by topic in separate folders. Each folder contains multiple files, including R/SAS codes and datasets. The files are named according to their purpose, and comments are included throughout the codes to explain the purpose of each line.
+The codes are organized by topic in separate files. Each file contains multiple components, including R/SAS codes and datasets. The files are named according to their purpose, and comments are included throughout the codes to explain the purpose of each line.
 
 ## Contributing
 If you have any codes or datasets related to CDA that you would like to contribute, feel free to open a pull request. Please make sure that your contribution is relevant to the topics covered in this course and well-documented.
